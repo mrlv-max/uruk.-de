@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uruk Healthcare - Developer Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body data-color-scheme="dark">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar__header">
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                    <span>Uruk <span class="dev-label">Dev</span></span>
+                </div>
+                <div class="developer-info">
+                    <div class="developer-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="developer-details">
+                        <div class="developer-name">Arjun Patel</div>
+                        <div class="developer-role">Senior Full Stack Developer</div>
+                    </div>
+                </div>
+            </div>
+            <ul class="sidebar__menu">
+                <li><a href="#overview" class="sidebar__link active" data-page="overview">
+                    <i class="fas fa-tachometer-alt"></i> Development Overview
+                </a></li>
+                <li><a href="#repositories" class="sidebar__link" data-page="repositories">
+                    <i class="fas fa-code-branch"></i> Code Repositories
+                </a></li>
+                <li><a href="#api-management" class="sidebar__link" data-page="api-management">
+                    <i class="fas fa-plug"></i> API Management
+                </a></li>
+                <li><a href="#database" class="sidebar__link" data-page="database">
+                    <i class="fas fa-database"></i> Database Console
+                </a></li>
+                <li><a href="#monitoring" class="sidebar__link" data-page="monitoring">
+                    <i class="fas fa-chart-line"></i> System Monitoring
+                </a></li>
+                <li><a href="#issues" class="sidebar__link" data-page="issues">
+                    <i class="fas fa-bug"></i> Issue Tracking
+                </a></li>
+                <li><a href="#deployment" class="sidebar__link" data-page="deployment">
+                    <i class="fas fa-rocket"></i> Deployment Pipeline
+                </a></li>
+                <li><a href="#analytics" class="sidebar__link" data-page="analytics">
+                    <i class="fas fa-users"></i> User Analytics
+                </a></li>
+                <li><a href="#security" class="sidebar__link" data-page="security">
+                    <i class="fas fa-shield-alt"></i> Security & Compliance
+                </a></li>
+                <li><a href="#collaboration" class="sidebar__link" data-page="collaboration">
+                    <i class="fas fa-comments"></i> Team Collaboration
+                </a></li>
+                <li><a href="#documentation" class="sidebar__link" data-page="documentation">
+                    <i class="fas fa-book"></i> Documentation
+                </a></li>
+                <li><a href="#settings" class="sidebar__link" data-page="settings">
+                    <i class="fas fa-cog"></i> Developer Settings
+                </a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Development Overview -->
+            <div id="overview" class="page active">
+                <div class="page__header">
+                    <div>
+                        <h1>Development Overview</h1>
+                        <p class="text-secondary">Sprint 24 - Q4 2025 • Uruk Core Platform Team</p>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="btn btn--primary" onclick="createBranch()">
+                            <i class="fas fa-code-branch"></i> New Branch
+                        </button>
+                        <button class="btn btn--secondary" onclick="deployStaging()">
+                            <i class="fas fa-upload"></i> Deploy to Staging
+                        </button>
+                        <button class="btn btn--outline" onclick="runTests()">
+                            <i class="fas fa-play"></i> Run Tests
+                        </button>
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="card metric-card">
+                        <div class="metric-icon commits"><i class="fas fa-code-commit"></i></div>
+                        <div class="metric-content">
+                            <h3>7</h3>
+                            <p>Commits Today</p>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-icon prs"><i class="fas fa-code-pull-request"></i></div>
+                        <div class="metric-content">
+                            <h3>3</h3>
+                            <p>Pull Requests Pending</p>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-icon build"><i class="fas fa-check-circle"></i></div>
+                        <div class="metric-content">
+                            <h3>94%</h3>
+                            <p>Build Success Rate</p>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-icon coverage"><i class="fas fa-shield-alt"></i></div>
+                        <div class="metric-content">
+                            <h3>87%</h3>
+                            <p>Test Coverage</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overview-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-server"></i> System Health</h2>
+                            <div class="status-indicator healthy">
+                                <span class="status-dot"></span> All Systems Operational
+                            </div>
+                        </div>
+                        <div class="card__body">
+                            <div id="systemHealthList" class="system-health-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-history"></i> Recent Activity</h2>
+                        </div>
+                        <div class="card__body">
+                            <div id="recentActivity" class="activity-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2><i class="fas fa-rocket"></i> Deployment Status</h2>
+                    </div>
+                    <div class="card__body">
+                        <div id="deploymentStatus" class="deployment-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code Repositories -->
+            <div id="repositories" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>Code Repositories</h1>
+                        <p class="text-secondary">Manage your Git repositories and code reviews</p>
+                    </div>
+                    <div class="search-controls">
+                        <input type="text" class="form-control" id="repoSearch" placeholder="Search repositories...">
+                        <button class="btn btn--primary" onclick="createRepository()">
+                            <i class="fas fa-plus"></i> New Repository
+                        </button>
+                    </div>
+                </div>
+
+                <div id="repositoryList" class="repository-grid"></div>
+            </div>
+
+            <!-- API Management -->
+            <div id="api-management" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>API Management</h1>
+                        <p class="text-secondary">Monitor and test your API endpoints</p>
+                    </div>
+                    <button class="btn btn--primary" onclick="testAllApis()">
+                        <i class="fas fa-play"></i> Test All APIs
+                    </button>
+                </div>
+
+                <div class="api-overview-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-chart-bar"></i> API Performance</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="chart-container" style="position: relative; height: 250px;">
+                                <canvas id="apiPerformanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-tachometer-alt"></i> API Metrics</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="api-metrics-grid">
+                                <div class="metric-item">
+                                    <div class="metric-value">47,410</div>
+                                    <div class="metric-label">Total Requests Today</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">198ms</div>
+                                    <div class="metric-label">Average Response Time</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">97.8%</div>
+                                    <div class="metric-label">Success Rate</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2><i class="fas fa-list"></i> API Endpoints</h2>
+                        <div class="endpoint-filters">
+                            <button class="btn btn--outline filter-btn active" data-filter="all">All</button>
+                            <button class="btn btn--outline filter-btn" data-filter="healthy">Healthy</button>
+                            <button class="btn btn--outline filter-btn" data-filter="warning">Warning</button>
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <div id="apiEndpointsList" class="api-endpoints-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Database Console -->
+            <div id="database" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>Database Console</h1>
+                        <p class="text-secondary">Query builder and database performance monitoring</p>
+                    </div>
+                    <button class="btn btn--primary" onclick="openQueryBuilder()">
+                        <i class="fas fa-search"></i> Query Builder
+                    </button>
+                </div>
+
+                <div class="database-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-database"></i> Database Health</h2>
+                        </div>
+                        <div class="card__body">
+                            <div id="databaseHealth" class="db-health-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-bolt"></i> Quick Query</h2>
+                        </div>
+                        <div class="card__body">
+                            <textarea class="query-editor" id="quickQuery" placeholder="SELECT * FROM patients WHERE..."></textarea>
+                            <div class="query-actions">
+                                <button class="btn btn--primary" onclick="executeQuery()">
+                                    <i class="fas fa-play"></i> Execute
+                                </button>
+                                <button class="btn btn--outline" onclick="explainQuery()">
+                                    <i class="fas fa-info-circle"></i> Explain
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2><i class="fas fa-clock"></i> Slow Queries</h2>
+                    </div>
+                    <div class="card__body">
+                        <div id="slowQueries" class="slow-queries-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Monitoring -->
+            <div id="monitoring" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>System Monitoring</h1>
+                        <p class="text-secondary">Real-time performance metrics and alerts</p>
+                    </div>
+                    <div class="monitoring-controls">
+                        <button class="btn btn--outline" onclick="refreshMetrics()">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button class="btn btn--secondary" onclick="exportMetrics()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="monitoring-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-server"></i> Server Resources</h2>
+                        </div>
+                        <div class="card__body">
+                            <div id="serverResources" class="resources-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-chart-area"></i> Performance Trends</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="chart-container" style="position: relative; height: 250px;">
+                                <canvas id="performanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2><i class="fas fa-exclamation-triangle"></i> Active Alerts</h2>
+                    </div>
+                    <div class="card__body">
+                        <div id="activeAlerts" class="alerts-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Issue Tracking -->
+            <div id="issues" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>Issue Tracking</h1>
+                        <p class="text-secondary">Bug tracking and sprint management</p>
+                    </div>
+                    <button class="btn btn--primary" onclick="createIssue()">
+                        <i class="fas fa-plus"></i> Create Issue
+                    </button>
+                </div>
+
+                <div class="issues-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-chart-pie"></i> Sprint Progress</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="sprint-stats">
+                                <div class="stat-item">
+                                    <div class="stat-number">12</div>
+                                    <div class="stat-label">Total Issues</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">5</div>
+                                    <div class="stat-label">In Progress</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">4</div>
+                                    <div class="stat-label">Code Review</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">3</div>
+                                    <div class="stat-label">Backlog</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-filter"></i> Issue Filters</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="filter-controls">
+                                <select class="form-control" id="issueTypeFilter">
+                                    <option value="">All Types</option>
+                                    <option value="Bug">Bug</option>
+                                    <option value="Feature">Feature</option>
+                                    <option value="Performance">Performance</option>
+                                </select>
+                                <select class="form-control" id="priorityFilter">
+                                    <option value="">All Priorities</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Low">Low</option>
+                                </select>
+                                <select class="form-control" id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="In Progress">In Progress</option>
+                                    <option value="Code Review">Code Review</option>
+                                    <option value="Backlog">Backlog</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2><i class="fas fa-list"></i> Issues</h2>
+                    </div>
+                    <div class="card__body">
+                        <div id="issuesList" class="issues-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deployment Pipeline -->
+            <div id="deployment" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>Deployment Pipeline</h1>
+                        <p class="text-secondary">CI/CD pipeline status and deployments</p>
+                    </div>
+                    <button class="btn btn--primary" onclick="triggerDeployment()">
+                        <i class="fas fa-rocket"></i> Deploy
+                    </button>
+                </div>
+
+                <div class="deployment-overview">
+                    <div id="pipelineStatus" class="pipeline-flow"></div>
+                </div>
+
+                <div class="deployment-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-list"></i> Recent Deployments</h2>
+                        </div>
+                        <div class="card__body">
+                            <div id="recentDeployments" class="deployments-list"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-vial"></i> Test Results</h2>
+                        </div>
+                        <div class="card__body">
+                            <div id="testResults" class="test-results-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Analytics -->
+            <div id="analytics" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>User Analytics</h1>
+                        <p class="text-secondary">Real-time user activity and engagement</p>
+                    </div>
+                    <button class="btn btn--outline" onclick="exportAnalytics()">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                </div>
+
+                <div class="analytics-metrics">
+                    <div class="card metric-card">
+                        <div class="metric-icon users"><i class="fas fa-users"></i></div>
+                        <div class="metric-content">
+                            <h3>16,635</h3>
+                            <p>Active Users</p>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-icon transactions"><i class="fas fa-credit-card"></i></div>
+                        <div class="metric-content">
+                            <h3>8,760</h3>
+                            <p>U-Card Transactions</p>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-icon performance"><i class="fas fa-stopwatch"></i></div>
+                        <div class="metric-content">
+                            <h3>1.8s</h3>
+                            <p>Avg Load Time</p>
+                        </div>
+                    </div>
+                    <div class="card metric-card">
+                        <div class="metric-icon error"><i class="fas fa-exclamation-circle"></i></div>
+                        <div class="metric-content">
+                            <h3>0.3%</h3>
+                            <p>Error Rate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-chart-line"></i> User Activity Trends</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="userActivityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-mobile-alt"></i> Platform Usage</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="platform-stats">
+                                <div class="platform-item">
+                                    <div class="platform-label">Mobile</div>
+                                    <div class="platform-bar">
+                                        <div class="platform-fill" style="width: 68%"></div>
+                                    </div>
+                                    <div class="platform-percentage">68%</div>
+                                </div>
+                                <div class="platform-item">
+                                    <div class="platform-label">Desktop</div>
+                                    <div class="platform-bar">
+                                        <div class="platform-fill" style="width: 32%"></div>
+                                    </div>
+                                    <div class="platform-percentage">32%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2><i class="fas fa-heartbeat"></i> Healthcare Metrics</h2>
+                    </div>
+                    <div class="card__body">
+                        <div id="healthcareMetrics" class="healthcare-metrics-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security & Compliance -->
+            <div id="security" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>Security & Compliance</h1>
+                        <p class="text-secondary">HIPAA compliance and security monitoring</p>
+                    </div>
+                    <button class="btn btn--primary" onclick="runSecurityScan()">
+                        <i class="fas fa-search"></i> Run Security Scan
+                    </button>
+                </div>
+
+                <div class="security-overview">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-shield-alt"></i> Security Status</h2>
+                            <div class="status-indicator healthy">
+                                <span class="status-dot"></span> Secure
+                            </div>
+                        </div>
+                        <div class="card__body">
+                            <div id="securityStatus" class="security-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-clipboard-check"></i> Compliance</h2>
+                        </div>
+                        <div class="card__body">
+                            <div id="complianceStatus" class="compliance-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2><i class="fas fa-certificate"></i> SSL Certificates</h2>
+                    </div>
+                    <div class="card__body">
+                        <div id="sslCertificates" class="certificates-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Collaboration -->
+            <div id="collaboration" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>Team Collaboration</h1>
+                        <p class="text-secondary">Team communication and project coordination</p>
+                    </div>
+                </div>
+
+                <div class="collaboration-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-users"></i> Team Status</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="team-members">
+                                <div class="team-member online">
+                                    <div class="member-avatar">AP</div>
+                                    <div class="member-info">
+                                        <div class="member-name">Arjun Patel</div>
+                                        <div class="member-status">Online • Working on U-Card integration</div>
+                                    </div>
+                                </div>
+                                <div class="team-member online">
+                                    <div class="member-avatar">PS</div>
+                                    <div class="member-info">
+                                        <div class="member-name">Priya Singh</div>
+                                        <div class="member-status">Online • Code Review</div>
+                                    </div>
+                                </div>
+                                <div class="team-member away">
+                                    <div class="member-avatar">RK</div>
+                                    <div class="member-info">
+                                        <div class="member-name">Ravi Kumar</div>
+                                        <div class="member-status">Away • Performance optimization</div>
+                                    </div>
+                                </div>
+                                <div class="team-member online">
+                                    <div class="member-avatar">MS</div>
+                                    <div class="member-info">
+                                        <div class="member-name">Meera Shah</div>
+                                        <div class="member-status">Online • Mobile development</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-calendar"></i> Team Calendar</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="calendar-events">
+                                <div class="calendar-event">
+                                    <div class="event-time">10:00 AM</div>
+                                    <div class="event-details">
+                                        <div class="event-title">Daily Standup</div>
+                                        <div class="event-participants">Team • 15 min</div>
+                                    </div>
+                                </div>
+                                <div class="calendar-event">
+                                    <div class="event-time">2:00 PM</div>
+                                    <div class="event-details">
+                                        <div class="event-title">Sprint Review</div>
+                                        <div class="event-participants">Product Team • 1 hour</div>
+                                    </div>
+                                </div>
+                                <div class="calendar-event">
+                                    <div class="event-time">4:00 PM</div>
+                                    <div class="event-details">
+                                        <div class="event-title">Code Review Session</div>
+                                        <div class="event-participants">Dev Team • 30 min</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2><i class="fas fa-comments"></i> Team Chat</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="chat-messages">
+                            <div class="chat-message">
+                                <div class="message-avatar">PS</div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-author">Priya Singh</span>
+                                        <span class="message-time">9:15 AM</span>
+                                    </div>
+                                    <div class="message-text">Just pushed the prescription export feature for review</div>
+                                </div>
+                            </div>
+                            <div class="chat-message">
+                                <div class="message-avatar">RK</div>
+                                <div class="message-content">
+                                    <div class="message-header">
+                                        <span class="message-author">Ravi Kumar</span>
+                                        <span class="message-time">8:45 AM</span>
+                                    </div>
+                                    <div class="message-text">Performance fix is deployed. Ambulance tracking should be much faster now</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" class="form-control" placeholder="Type a message..." id="chatInput">
+                            <button class="btn btn--primary" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentation -->
+            <div id="documentation" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>Documentation</h1>
+                        <p class="text-secondary">Technical documentation and guides</p>
+                    </div>
+                    <button class="btn btn--primary" onclick="createDoc()">
+                        <i class="fas fa-plus"></i> Create Document
+                    </button>
+                </div>
+
+                <div class="docs-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-search"></i> Search Documentation</h2>
+                        </div>
+                        <div class="card__body">
+                            <input type="text" class="form-control" id="docSearch" placeholder="Search documentation...">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-star"></i> Quick Access</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="quick-links">
+                                <a href="#" class="quick-link">
+                                    <i class="fas fa-plug"></i>
+                                    <span>API Reference</span>
+                                </a>
+                                <a href="#" class="quick-link">
+                                    <i class="fas fa-database"></i>
+                                    <span>Database Schema</span>
+                                </a>
+                                <a href="#" class="quick-link">
+                                    <i class="fas fa-code"></i>
+                                    <span>Coding Standards</span>
+                                </a>
+                                <a href="#" class="quick-link">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Security Guidelines</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="docs-content-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-book"></i> Documentation Categories</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="doc-categories">
+                                <div class="doc-category">
+                                    <h4><i class="fas fa-code"></i> Development</h4>
+                                    <p>Setup guides, coding standards, and best practices</p>
+                                    <span class="doc-count">12 documents</span>
+                                </div>
+                                <div class="doc-category">
+                                    <h4><i class="fas fa-plug"></i> API Documentation</h4>
+                                    <p>REST API endpoints, authentication, and examples</p>
+                                    <span class="doc-count">8 documents</span>
+                                </div>
+                                <div class="doc-category">
+                                    <h4><i class="fas fa-rocket"></i> Deployment</h4>
+                                    <p>CI/CD pipelines, environment setup, and deployment guides</p>
+                                    <span class="doc-count">6 documents</span>
+                                </div>
+                                <div class="doc-category">
+                                    <h4><i class="fas fa-shield-alt"></i> Security</h4>
+                                    <p>HIPAA compliance, security protocols, and audit procedures</p>
+                                    <span class="doc-count">9 documents</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-history"></i> Recent Updates</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="recent-docs">
+                                <div class="doc-item">
+                                    <div class="doc-icon"><i class="fas fa-file-code"></i></div>
+                                    <div class="doc-info">
+                                        <h4>U-Card Integration Guide</h4>
+                                        <p>Updated authentication flow documentation</p>
+                                        <span class="doc-meta">Updated 2 hours ago by Arjun Patel</span>
+                                    </div>
+                                </div>
+                                <div class="doc-item">
+                                    <div class="doc-icon"><i class="fas fa-database"></i></div>
+                                    <div class="doc-info">
+                                        <h4>Database Migration Guide</h4>
+                                        <p>Added new migration procedures for v2.5</p>
+                                        <span class="doc-meta">Updated yesterday by Ravi Kumar</span>
+                                    </div>
+                                </div>
+                                <div class="doc-item">
+                                    <div class="doc-icon"><i class="fas fa-mobile-alt"></i></div>
+                                    <div class="doc-info">
+                                        <h4>Mobile API Specifications</h4>
+                                        <p>Updated ambulance tracking API endpoints</p>
+                                        <span class="doc-meta">Updated 3 days ago by Meera Shah</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Developer Settings -->
+            <div id="settings" class="page">
+                <div class="page__header">
+                    <div>
+                        <h1>Developer Settings</h1>
+                        <p class="text-secondary">Customize your development environment</p>
+                    </div>
+                </div>
+
+                <div class="settings-grid">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-user"></i> Profile Settings</h2>
+                        </div>
+                        <div class="card__body">
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" value="Arjun Patel">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" value="arjun.patel@uruk.dev">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">GitHub Username</label>
+                                    <input type="text" class="form-control" id="githubUsername" value="arjun-uruk">
+                                </div>
+                                <button type="submit" class="btn btn--primary">Update Profile</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card__header">
+                            <h2><i class="fas fa-palette"></i> Preferences</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="preferences">
+                                <div class="preference-item">
+                                    <label>
+                                        <input type="checkbox" id="darkMode" checked> Dark Mode
+                                    </label>
+                                </div>
+                                <div class="preference-item">
+                                    <label>
+                                        <input type="checkbox" id="notifications" checked> Notifications
+                                    </label>
+                                </div>
+                                <div class="preference-item">
+                                    <label>
+                                        <input type="checkbox" id="autoRefresh" checked> Auto-refresh Metrics
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Theme</label>
+                                    <select class="form-control" id="codeTheme">
+                                        <option value="dark">Dark (Default)</option>
+                                        <option value="light">Light</option>
+                                        <option value="monokai">Monokai</option>
+                                        <option value="github">GitHub</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card__header">
+                        <h2><i class="fas fa-key"></i> API Keys & Access</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="api-keys-list">
+                            <div class="api-key-item">
+                                <div class="key-info">
+                                    <h4>Development API Key</h4>
+                                    <p>For local development and testing</p>
+                                    <code>uruk_dev_************************</code>
+                                </div>
+                                <div class="key-actions">
+                                    <button class="btn btn--outline btn--sm" onclick="regenerateKey('dev')">Regenerate</button>
+                                    <button class="btn btn--outline btn--sm" onclick="copyKey('dev')">Copy</button>
+                                </div>
+                            </div>
+                            <div class="api-key-item">
+                                <div class="key-info">
+                                    <h4>Staging API Key</h4>
+                                    <p>For staging environment testing</p>
+                                    <code>uruk_stg_************************</code>
+                                </div>
+                                <div class="key-actions">
+                                    <button class="btn btn--outline btn--sm" onclick="regenerateKey('staging')">Regenerate</button>
+                                    <button class="btn btn--outline btn--sm" onclick="copyKey('staging')">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
